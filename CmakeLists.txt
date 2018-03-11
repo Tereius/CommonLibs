@@ -1,8 +1,10 @@
 cmake_minimum_required (VERSION 3.1)
-project (CommonLibraries)
+project(CommonLibraries)
 include(GenerateExportHeader)
 include(CMakePackageConfigHelpers)
 include(ExternalProject)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "Default Targets")
 
 set(EXTERNAL_CMAKE_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}")
 
@@ -153,6 +155,7 @@ endif()
 
 set(CMAKE_INSTALL_DIR "cmake")
 configure_package_config_file("${CMAKE_SOURCE_DIR}/commonLibsConfig.cmake.in" "${CMAKE_BINARY_DIR}/commonLibsConfig.cmake" INSTALL_DESTINATION cmake
-                              PATH_VARS CMAKE_INSTALL_DIR)
+							  PATH_VARS CMAKE_INSTALL_DIR)
+configure_file("${CMAKE_SOURCE_DIR}/commonLibs.cmake.in" "${CMAKE_BINARY_DIR}/commonLibs_${EXTERNAL_PROJECT_BUILD_TYPE}.cmake" @ONLY)
 
-install(FILES "${CMAKE_BINARY_DIR}/commonLibsConfig.cmake" DESTINATION cmake)
+install(FILES "${CMAKE_BINARY_DIR}/commonLibsConfig.cmake" "${CMAKE_BINARY_DIR}/commonLibs_${EXTERNAL_PROJECT_BUILD_TYPE}.cmake" DESTINATION cmake)

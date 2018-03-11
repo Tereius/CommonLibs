@@ -22,21 +22,33 @@ msbuild /p:Configuration=${EXTERNAL_PROJECT_BUILD_TYPE}
 "
 )
 
+string(REPLACE "/" "\\" EXTERNAL_PROJECT_BINARY_DIR_BACK "${EXTERNAL_PROJECT_BINARY_DIR}")
+string(REPLACE "/" "\\" EXTERNAL_PROJECT_INSTALL_DIR_BACK "${EXTERNAL_PROJECT_INSTALL_DIR}")
 file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/install.bat
 "
-REM copy /y \"${EXTERNAL_PROJECT_BINARY_DIR}/src/QtAV/lib_win_x86_64/*Qt*AV*.lib*\"
-REM copy /y \"${EXTERNAL_PROJECT_BINARY_DIR}/src/QtAV/lib_win_x86_64/QtAV1.lib\"
-REM copy /y \"${EXTERNAL_PROJECT_BINARY_DIR}/src/QtAV/lib_win_x86_64/QtAVd1.lib\"
-REM copy /y \"${EXTERNAL_PROJECT_BINARY_DIR}/src/QtAV/bin/Qt*AV*.dll\"
-REM 
-REM copy /y \"${EXTERNAL_PROJECT_BINARY_DIR}/src/QtAV/lib_win_x86_64/*Qt*AV*.lib*\"
-REM copy /y \"${EXTERNAL_PROJECT_BINARY_DIR}/src/QtAV/lib_win_x86_64/QtAVWidgets1.lib\"
-REM copy /y \"${EXTERNAL_PROJECT_BINARY_DIR}/src/QtAV/lib_win_x86_64/QtAVWidgetsd1.lib\"
-REM copy /y \"${EXTERNAL_PROJECT_BINARY_DIR}/src/QtAV/bin/Qt*AV*.dll\"
-REM copy /y \"${EXTERNAL_PROJECT_BINARY_DIR}/src/QtAV/src/QtAV/*.h\"
-REM copy /y \"${EXTERNAL_PROJECT_BINARY_DIR}/src/QtAV/src/QtAV/QtAV\"
-REM copy /y \"${EXTERNAL_PROJECT_BINARY_DIR}/src/QtAV/widgets/QtAVWidgets/*.h\"
-REM copy /y \"${EXTERNAL_PROJECT_BINARY_DIR}/src/QtAV/widgets/QtAVWidgets/QtAVWidgets\"
+${CMAKE_COMMAND} -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}\"
+${CMAKE_COMMAND} -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}/bin\"
+${CMAKE_COMMAND} -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}/lib\"
+${CMAKE_COMMAND} -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}/lib/qml\"
+${CMAKE_COMMAND} -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}/include\"
+${CMAKE_COMMAND} -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}/include/QtAV\"
+${CMAKE_COMMAND} -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}/include/QtAVWidgets\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\lib_win_x86_64\\*Qt*AV*.lib*\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\lib_win_x86_64\\QtAV1.lib\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\\Qt5AV.lib\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\lib_win_x86_64\\QtAVd1.lib\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\\Qt5AVd.lib\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\bin\\Qt*AV*.dll\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\bin\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\lib_win_x86_64\\*QmlAV*.lib\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\\qml\\QtAV\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\bin\\QtAV\\*QmlAV*.dll\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\\qml\\QtAV\"
+
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\lib_win_x86_64\\QtAVWidgets1.lib\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\\Qt5AVWidgets.lib\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\lib_win_x86_64\\QtAVWidgetsd1.lib\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\\Qt5AVWidgetsd.lib\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\src\\QtAV\\*.h\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\include\\QtAV\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\src\\QtAV\\QtAV\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\include\\QtAV\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\widgets\\QtAVWidgets\\*.h\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\include\\QtAVWidgets\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\widgets\\QtAVWidgets\\QtAVWidgets\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\include\\QtAVWidgets\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\qml\\qmldir\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\\qml\\QtAV\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\qml\\Video.qml\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\\qml\\QtAV\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\qml\\plugins.qmltypes\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\\qml\\QtAV\"
 "
 )
 
@@ -55,3 +67,5 @@ ExternalProject_Add(${EXTERNAL_PROJECT_NAME}
     LOG_TEST 1
     LOG_INSTALL 1
 )
+
+set(EXTERNAL_QML2_IMPORT_PATH_REL "${EXTERNAL_QML2_IMPORT_PATH_REL};${EXTERNAL_PROJECT_PREFIX}/lib/qml")
