@@ -27,7 +27,7 @@ file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/configure.bat
 call \"${CMAKE_BINARY_DIR}/setMsvcEnv.bat\"
 call \"${CMAKE_BINARY_DIR}/setSearchEnv.bat\"
 cd /D \"${EXTERNAL_PROJECT_BINARY_DIR}/src/FFmpeg-build\"
-call ${MSYS_SHELL} -msys2 -defterm -no-start -use-full-path -here -c \"'${EXTERNAL_PROJECT_BINARY_DIR}/src/FFmpeg/configure' --extra-cflags='-DWIN32_LEAN_AND_MEAN' ${FFMPEG_OPTIONS} --prefix='${EXTERNAL_PROJECT_INSTALL_DIR}'\"
+call \"${MSYS_SHELL}\" -msys2 -defterm -no-start -use-full-path -here -c \"'${EXTERNAL_PROJECT_BINARY_DIR}/src/FFmpeg/configure' --extra-cflags='-DWIN32_LEAN_AND_MEAN' ${FFMPEG_OPTIONS} --prefix='${EXTERNAL_PROJECT_INSTALL_DIR}'\"
 echo #undef HAVE_UNISTD_H >> config.h
 "
 )
@@ -37,7 +37,7 @@ file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/build.bat
 call \"${CMAKE_BINARY_DIR}/setMsvcEnv.bat\"
 call \"${CMAKE_BINARY_DIR}/setSearchEnv.bat\"
 cd /D \"${EXTERNAL_PROJECT_BINARY_DIR}/src/FFmpeg-build\"
-call ${MSYS_SHELL} -msys2 -defterm -no-start -use-full-path -here -c \"make\"
+call \"${MSYS_SHELL}\" -msys2 -defterm -no-start -use-full-path -here -c \"make\"
 "
 )
 
@@ -46,7 +46,7 @@ file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/install.bat
 call \"${CMAKE_BINARY_DIR}/setMsvcEnv.bat\"
 call \"${CMAKE_BINARY_DIR}/setSearchEnv.bat\"
 cd /D \"${EXTERNAL_PROJECT_BINARY_DIR}/src/FFmpeg-build\"
-call ${MSYS_SHELL} -msys2 -defterm -no-start -use-full-path -here -c \"make install\"
+call \"${MSYS_SHELL}\" -msys2 -defterm -no-start -use-full-path -here -c \"make install\"
 "
 )
 

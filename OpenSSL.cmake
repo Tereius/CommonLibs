@@ -2,7 +2,6 @@ include(ExternalProject)
 
 find_program(MSYS_EXECUTABLE msys2 DOC "msys2.exe")
 get_filename_component(MSYS_DIR ${MSYS_EXECUTABLE} DIRECTORY)
-set(MSYS_SHELL "${MSYS_DIR}/msys2_shell.cmd")
 
 set(OpenSSL_BRANCH OpenSSL_1_0_1-stable CACHE STRING "The git branch to use.")
 set(OpenSSL_SHARED on CACHE BOOL "Bulid shared libs.")

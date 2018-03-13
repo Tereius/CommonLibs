@@ -11,6 +11,32 @@ set(EXTERNAL_CMAKE_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}")
 # Set a default build type if none was specified
 set(default_build_type "Release")
 
+# Check Windows Version
+string(REPLACE "." ";" KERNEL_VERSION_LIST ${CMAKE_SYSTEM_VERSION})
+list(LENGTH KERNEL_VERSION_LIST KERNEL_VERSION_LIST_LENGTH)
+if(KERNEL_VERSION_LIST_LENGTH GREATER "0")
+	list(GET KERNEL_VERSION_LIST 0 KERNEL_VERSION_MAJOR)
+endif()
+if(KERNEL_VERSION_LIST_LENGTH GREATER "1")
+	list(GET KERNEL_VERSION_LIST 1 KERNEL_VERSION_MINOR)
+endif()
+if(KERNEL_VERSION_LIST_LENGTH GREATER "2")
+	list(GET KERNEL_VERSION_LIST 2 KERNEL_VERSION_PATCH)
+endif()
+
+# Set long path support for windows 10
+if(KERNEL_VERSION_MAJOR GREATER "6")
+	if(NOT ENABLE_LONG_PATH_SUPPORT)
+		message(STATUS "HINT: Some libraries will only compile if you enable long path support in regedit. You may want to enable ENABLE_LONG_PATH_SUPPORT so cmake will do this for you.")
+	else(NOT ENABLE_LONG_PATH_SUPPORT)
+		file(WRITE ${CMAKE_BINARY_DIR}/removeLimit.reg "Windows Registry Editor Version 5.00 \r\n [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem] \r\n \"LongPathsEnabled\"=dword:00000001")
+		execute_process(COMMAND regedit /S ${CMAKE_BINARY_DIR}/removeLimit.reg RESULT_VARIABLE SET_LONG_PATH_RESULT)
+		message(STATUS "Set long path support returned: ${SET_LONG_PATH_RESULT}")
+	endif()
+else(KERNEL_VERSION_MAJOR GREATER "6")
+	message(WARNING "The Windows Version you are using doesn't support paths longer than 260 characters. Some libraries will not compile.")
+endif()
+
 # If we have a multi config generator only set the first type
 if(CMAKE_CONFIGURATION_TYPES)
 	set(CMAKE_CONFIGURATION_TYPES_LENGTH)
