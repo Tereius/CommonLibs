@@ -1,0 +1,25 @@
+version: 1.0.{build}
+image: Visual Studio 2013
+platform: x64
+configuration: Debug
+build_script:
+- cmd: >-
+    mkdir install
+    mkdir build
+    cd build
+    cmake -G "Visual Studio 12 2013" Win64 -DCMAKE_INSTALL_PREFIX:PATH=C:/projects/commonLibs/install -DMSYS_EXECUTABLE:FILEPATH=C:/msys64/msys2.exe ../
+    cmake --build ./
+test: off
+artifacts:
+- path: commonLibs\build\logs\*.log
+  name: logs
+deploy: off
+notifications:
+- provider: Email
+  to:
+  - bjoern.stresing@gmx.de
+  subject: CommonLibs Build
+  message: A build finished.
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: false
