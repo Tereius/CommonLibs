@@ -53,6 +53,7 @@ if(WIN32)
 	ExternalProject_Add(${EXTERNAL_PROJECT_NAME}
 		DEPENDS Python Perl zlib OpenSSL
 		PREFIX ${EXTERNAL_PROJECT_PREFIX}
+		STAMP_DIR ${CMAKE_BINARY_DIR}/logs
 		GIT_REPOSITORY https://code.qt.io/qt/qt5.git
 		GIT_TAG ${Qt5_BRANCH}
 		GIT_SUBMODULES ${Qt5_MODULES}

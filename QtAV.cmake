@@ -54,7 +54,8 @@ copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\qml\\plugins.qmltypes\
 
 ExternalProject_Add(${EXTERNAL_PROJECT_NAME}
     DEPENDS FFmpeg Qt5
-	PREFIX ${EXTERNAL_PROJECT_PREFIX}
+    PREFIX ${EXTERNAL_PROJECT_PREFIX}
+    STAMP_DIR ${CMAKE_BINARY_DIR}/logs
     GIT_REPOSITORY https://github.com/wang-bin/QtAV.git
     GIT_TAG ${QtAv_BRANCH}
     CONFIGURE_COMMAND ${EXTERNAL_PROJECT_BINARY_DIR}/configure.bat
