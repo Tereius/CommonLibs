@@ -10,12 +10,12 @@ build_script:
 
     cd build
 
-    cmake -G "Visual Studio 12 2013" Win64 -DCMAKE_INSTALL_PREFIX:PATH=C:/projects/commonLibs/install -DMSYS_EXECUTABLE:FILEPATH=C:/msys64/msys2.exe ../
+    cmake -G "Visual Studio 12 2013 Win64" -DCMAKE_INSTALL_PREFIX:PATH=C:/projects/commonLibs/install -DMSYS_EXECUTABLE:FILEPATH=C:/msys64/msys2.exe ../
 
     cmake --build ./
 test: off
 artifacts:
-- path: commonLibs\build\logs\*.log
+- path: logs\*.log
   name: logs
 deploy: off
 notifications:
@@ -27,3 +27,10 @@ notifications:
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: false
+on_failure:
+- cmd: >-
+    dir
+
+    7z a logs.zip logs/*log
+
+    appveyor PushArtifact logs.zip
