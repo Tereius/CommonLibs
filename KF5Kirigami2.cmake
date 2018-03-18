@@ -27,7 +27,7 @@ call \"${CMAKE_BINARY_DIR}/setSearchEnv.bat\"
 
 ExternalProject_Add(${EXTERNAL_PROJECT_NAME}
 	DEPENDS ECM Qt5
-    PREFIX ${EXTERNAL_PROJECT_PREFIX}
+    PREFIX ${EXTERNAL_PROJECT_NAME}
     STAMP_DIR ${CMAKE_BINARY_DIR}/logs
     GIT_REPOSITORY https://github.com/KDE/kirigami.git
     GIT_TAG ${KIRIGAMI2_BRANCH}

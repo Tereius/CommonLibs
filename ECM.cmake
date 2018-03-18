@@ -22,7 +22,7 @@ file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/install.bat
 )
 
 ExternalProject_Add(${EXTERNAL_PROJECT_NAME}
-    PREFIX ${EXTERNAL_PROJECT_PREFIX}
+    PREFIX ${EXTERNAL_PROJECT_NAME}
     STAMP_DIR ${CMAKE_BINARY_DIR}/logs
     GIT_REPOSITORY https://github.com/KDE/extra-cmake-modules.git
     GIT_TAG ${ECM_BRANCH}
