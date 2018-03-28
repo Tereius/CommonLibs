@@ -57,7 +57,7 @@ if(WIN32)
 
 	ExternalProject_Add(${EXTERNAL_PROJECT_NAME}
 		DEPENDS Perl zlib
-		PREFIX ${EXTERNAL_PROJECT_PREFIX}
+		PREFIX ${EXTERNAL_PROJECT_NAME}
 		STAMP_DIR ${CMAKE_BINARY_DIR}/logs
 		GIT_REPOSITORY https://github.com/openssl/openssl.git
 		GIT_TAG ${OpenSSL_BRANCH}

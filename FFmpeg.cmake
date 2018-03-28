@@ -52,7 +52,7 @@ call \"${MSYS_SHELL}\" -msys2 -defterm -no-start -use-full-path -here -c \"make 
 
 ExternalProject_Add(${EXTERNAL_PROJECT_NAME}
 	DEPENDS nasm zlib OpenSSL
-	PREFIX ${EXTERNAL_PROJECT_PREFIX}
+	PREFIX ${EXTERNAL_PROJECT_NAME}
 	STAMP_DIR ${CMAKE_BINARY_DIR}/logs
     GIT_REPOSITORY https://github.com/FFmpeg/FFmpeg.git
     GIT_TAG ${FFMPEG_BRANCH}
