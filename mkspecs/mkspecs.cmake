@@ -1,0 +1,5 @@
+if(WIN32)
+    include(mkspecs/win/win.cmake)
+else(WIN32)
+    message(FATAL_ERROR "Unsupported host.")
+endif()
