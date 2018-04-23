@@ -1,6 +1,6 @@
 include(ExternalProject)
 
-set(QtAv_BRANCH master CACHE STRING "The git branch to use.")
+set(QtAv_BRANCH v1.12.0 CACHE STRING "The git branch to use.")
 
 string(REPLACE ";" " -L" EXTERNAL_LIB_PATH_STRING "${EXTERNAL_LIB_PATH}")
 string(REPLACE ";" " " EXTERNAL_INCLUDE_PATH_STRING "${EXTERNAL_INCLUDE_PATH}")
@@ -30,6 +30,7 @@ file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/install.bat
 \"${CMAKE_COMMAND}\" -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}/bin\"
 \"${CMAKE_COMMAND}\" -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}/lib\"
 \"${CMAKE_COMMAND}\" -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}/lib/qml\"
+\"${CMAKE_COMMAND}\" -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}/lib/qml/QtAV\"
 \"${CMAKE_COMMAND}\" -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}/include\"
 \"${CMAKE_COMMAND}\" -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}/include/QtAV\"
 \"${CMAKE_COMMAND}\" -E make_directory \"${EXTERNAL_PROJECT_INSTALL_DIR}/include/QtAVWidgets\"
@@ -46,9 +47,11 @@ copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\src\\QtAV\\*.h\" \"${E
 copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\src\\QtAV\\QtAV\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\include\\QtAV\"
 copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\widgets\\QtAVWidgets\\*.h\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\include\\QtAVWidgets\"
 copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\widgets\\QtAVWidgets\\QtAVWidgets\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\include\\QtAVWidgets\"
+
 copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\qml\\qmldir\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\\qml\\QtAV\"
 copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\qml\\Video.qml\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\\qml\\QtAV\"
 copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\qml\\plugins.qmltypes\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\\qml\\QtAV\"
+copy /Y \"${EXTERNAL_PROJECT_BINARY_DIR_BACK}\\src\\QtAV\\bin\\QtAV\\QmlAVd.dll\" \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\lib\\qml\\QtAV\"
 "
 )
 
