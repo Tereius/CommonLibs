@@ -5,7 +5,7 @@ get_filename_component(MSYS_DIR ${MSYS_EXECUTABLE} DIRECTORY)
 set(MSYS_SHELL "${MSYS_DIR}/msys2_shell.cmd")
 
 set(FFMPEG_BRANCH release/3.4 CACHE STRING "The git branch to use.")
-set(FFMPEG_OPTIONS "--enable-openssl --enable-gpl --enable-nonfree" CACHE STRING "FFmpeg options forwarded to configure.")
+set(FFMPEG_OPTIONS "--enable-openssl --enable-libx264 --enable-gpl --enable-nonfree" CACHE STRING "FFmpeg options forwarded to configure.")
 set(FFMPEG_BUILD_SHARED on CACHE BOOL "Bulid shared libs.")
 
 if(FFMPEG_BUILD_SHARED)
@@ -51,7 +51,7 @@ call \"${MSYS_SHELL}\" -msys2 -defterm -no-start -use-full-path -here -c \"make 
 )
 
 ExternalProject_Add(${EXTERNAL_PROJECT_NAME}
-	DEPENDS nasm zlib OpenSSL
+	DEPENDS nasm zlib x264 OpenSSL
 	PREFIX ${EXTERNAL_PROJECT_NAME}
 	STAMP_DIR ${CMAKE_BINARY_DIR}/logs
     GIT_REPOSITORY https://github.com/FFmpeg/FFmpeg.git
