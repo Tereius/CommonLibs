@@ -11,14 +11,6 @@ if(KERNEL_VERSION_LIST_LENGTH GREATER "2")
 	list(GET KERNEL_VERSION_LIST 2 KERNEL_VERSION_PATCH)
 endif()
 
-set(SDK_VERSION "8.1")
-if(CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION)
-    set(SDK_VERSION ${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION})
-    message(STATUS "Using windows SDK toolset version ${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION}")
-else()
-    message(STATUS "No windows 10 SDK toolset version set. Using fallback SDK 8.1")
-endif()
-
 # Set long path support for windows 10
 if(KERNEL_VERSION_MAJOR GREATER "6")
 	if(NOT ENABLE_LONG_PATH_SUPPORT)
@@ -33,6 +25,9 @@ else(KERNEL_VERSION_MAJOR GREATER "6")
 endif()
 
 if(MSVC)
+
+	message(STATUS "Using MSVC version ${MSVC_VERSION}")
+
     # Common targets other projects may depend on
     set(PERL_PATH "${CMAKE_BINARY_DIR}/Perl/src/Perl/perl/site/bin;${CMAKE_BINARY_DIR}/Perl/src/Perl/perl/bin;${CMAKE_BINARY_DIR}/Perl/src/Perl/c/bin")
     ExternalProject_Add(Perl
@@ -71,6 +66,17 @@ if(MSVC)
 		endif()
 	else()
 		unset(VSDEVCMD CACHE)
+	endif()
+	
+	set(SDK_VERSION "")
+	if(MSVC_VERSION GREATER 1800)
+		if(CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION)
+			set(SDK_VERSION ${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION})
+			message(STATUS "Using windows SDK toolset version ${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION}")
+		else()
+			set(SDK_VERSION "8.1")
+			message(STATUS "No windows 10 SDK toolset version set. Using fallback SDK 8.1")
+		endif()
 	endif()
 
     # Write a script file that sets the msvc environment for vs 2013.
