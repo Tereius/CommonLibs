@@ -11,6 +11,14 @@ if(KERNEL_VERSION_LIST_LENGTH GREATER "2")
 	list(GET KERNEL_VERSION_LIST 2 KERNEL_VERSION_PATCH)
 endif()
 
+set(SDK_VERSION "8.1")
+if(CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION)
+    set(SDK_VERSION ${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION})
+    message(STATUS "Using windows SDK toolset version ${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION}")
+else()
+    message(STATUS "No windows 10 SDK toolset version set. Using fallback SDK 8.1")
+endif()
+
 # Set long path support for windows 10
 if(KERNEL_VERSION_MAJOR GREATER "6")
 	if(NOT ENABLE_LONG_PATH_SUPPORT)
@@ -58,7 +66,7 @@ if(MSVC)
 	if(NOT VCVARSALL)
 		find_file(VSDEVCMD vsdevcmd.bat "${MY_COMPILER_DIR}/.." "${MY_COMPILER_DIR}/../.." "${MY_COMPILER_DIR}/../../../../../../../Common7/Tools")
         if(VSDEVCMD)
-            message(WARNING "Couldn't find vcvarsall. qmake may not find the correct wind SDK toolset.")
+            message(WARNING "Couldn't find vcvarsall. qmake may not find the correct windows SDK toolset.")
 			unset(VCVARSALL CACHE)
 		endif()
 	else()
@@ -77,7 +85,7 @@ if(MSVC)
         endif()
         file(WRITE ${CMAKE_BINARY_DIR}/setMsvcEnv.bat
         "
-        call \"${VCVARSALL}\" ${VCVARSALL_OPTION}
+        call \"${VCVARSALL}\" ${VCVARSALL_OPTION} ${SDK_VERSION}
         "
         )
     endif()
