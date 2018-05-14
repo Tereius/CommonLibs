@@ -29,6 +29,7 @@ file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/patch.bat
 call \"${CMAKE_BINARY_DIR}/setSearchEnv.bat\"
 cd /D \"${EXTERNAL_PROJECT_BINARY_DIR}/src/sigar\"
 git apply ${CMAKE_SOURCE_DIR}/patches/sigar.patch
+exit 0
 "
 )
 
