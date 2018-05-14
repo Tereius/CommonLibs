@@ -24,6 +24,14 @@ call \"${CMAKE_BINARY_DIR}/setSearchEnv.bat\"
 "
 )
 
+file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/patch.bat
+"
+call \"${CMAKE_BINARY_DIR}/setSearchEnv.bat\"
+cd /D \"${EXTERNAL_PROJECT_BINARY_DIR}/src/sigar\"
+git apply ${CMAKE_SOURCE_DIR}/patches/sigar.patch
+"
+)
+
 ExternalProject_Add(${EXTERNAL_PROJECT_NAME}
     PREFIX ${EXTERNAL_PROJECT_NAME}
     STAMP_DIR ${CMAKE_BINARY_DIR}/logs
@@ -32,6 +40,7 @@ ExternalProject_Add(${EXTERNAL_PROJECT_NAME}
     CONFIGURE_COMMAND ${EXTERNAL_PROJECT_BINARY_DIR}/configure.bat
     BUILD_COMMAND ${EXTERNAL_PROJECT_BINARY_DIR}/build.bat
     INSTALL_COMMAND ${EXTERNAL_PROJECT_BINARY_DIR}/install.bat
+    PATCH_COMMAND ${EXTERNAL_PROJECT_BINARY_DIR}/patch.bat
     LOG_DOWNLOAD 1
     LOG_UPDATE 1
     LOG_CONFIGURE 1

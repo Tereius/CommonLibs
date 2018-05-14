@@ -1,0 +1,26 @@
+ src/os/win32/sigar_os.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/os/win32/sigar_os.h b/src/os/win32/sigar_os.h
+index e98de45d..23e2a2ec 100755
+--- a/src/os/win32/sigar_os.h
++++ b/src/os/win32/sigar_os.h
+@@ -25,7 +25,6 @@
+ 
+ #ifdef MSVC
+ #define WIN32_LEAN_AND_MEAN
+-#define snprintf _snprintf
+ #if _MSC_VER <= 1200
+ #define SIGAR_USING_MSC6 /* Visual Studio version 6 */
+ #define HAVE_MIB_IPADDRROW_WTYPE 0
+@@ -49,6 +48,10 @@
+ #include <errno.h>
+ #include <tlhelp32.h>
+ 
++#ifndef snprintf
++#define snprintf _snprintf
++#endif
++
+ #include "sigar_util.h"
+ 
+ #ifdef MSVC
