@@ -1,7 +1,7 @@
 include(ExternalProject)
 
-set(Qt5_BRANCH v5.9.3 CACHE STRING "The git branch to use.")
-set(Qt5_OPTIONS "-opensource -confirm-license -nomake examples -nomake tests -ssl -openssl-linked" CACHE STRING "Qt5 options forwarded to configure.")
+set(Qt5_BRANCH 5.9 CACHE STRING "The git branch to use.")
+set(Qt5_OPTIONS "-opensource -confirm-license -nomake examples -nomake tests -openssl-linked" CACHE STRING "Qt5 options forwarded to configure.")
 set(Qt5_BUILD_SHARED on CACHE BOOL "Bulid shared libs.")
 set(Qt5_MODULES "qtbase qtsvg qtdeclarative qttools qttranslations qtrepotools qtqa qtgraphicaleffects qtquickcontrols qtquickcontrols2" CACHE STRING "QT Submodules.")
 
@@ -21,12 +21,14 @@ set(Qt5_OPTIONS "${Qt5_OPTIONS} -platform win32-g++")
 
 if(WIN32)
 
+	string(REPLACE ";" " -I" EXTERNAL_INCLUDE_PATH_STR_ "${EXTERNAL_INCLUDE_PATH}")
+	string(REPLACE ";" " -L" EXTERNAL_LIB_PATH_STR_ "${EXTERNAL_LIB_PATH}")
 	file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/configure.sh
     "
     #!/bin/bash
 	source \"${CMAKE_BINARY_DIR}/setSearchEnv.sh\"
 	cd \"${EXTERNAL_PROJECT_BINARY_DIR}/src/Qt5-build\"
-	\"${EXTERNAL_PROJECT_BINARY_DIR}/src/Qt5/configure\" ${Qt5_OPTIONS} -prefix \"${EXTERNAL_PROJECT_INSTALL_DIR}\"
+	\"${EXTERNAL_PROJECT_BINARY_DIR}/src/Qt5/configure\" ${Qt5_OPTIONS} ${EXTERNAL_INCLUDE_PATH_STR_} ${EXTERNAL_LIB_PATH_STR_} -prefix \"${EXTERNAL_PROJECT_INSTALL_DIR}\"
 	"
 	)
 
