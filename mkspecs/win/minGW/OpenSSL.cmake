@@ -69,4 +69,6 @@ COMMENT "Duplcating lib for common names."
 DEPENDEES install
 LOG 1
 )
+
+set(EXTERNAL_PROJECT_PKG_CONFIG_PATH ${EXTERNAL_PROJECT_INSTALL_DIR}/lib/pkgconfig)
     

@@ -133,7 +133,11 @@ elseif(MINGW)
     message(STATUS "Using minGW generator: ${CMAKE_GENERATOR}")
     include_and_prepare(mkspecs/win/minGW/zlib.cmake)
     include_and_prepare(mkspecs/win/minGW/OpenSSL.cmake)
+    include_and_prepare(mkspecs/win/minGW/Qt5.cmake)
     include_and_prepare(mkspecs/win/minGW/gsoap.cmake)
+    include_and_prepare(mkspecs/win/minGW/x264.cmake)
+    include_and_prepare(mkspecs/win/minGW/FFmpeg.cmake)
+    include_and_prepare(mkspecs/win/minGW/Xercesc.cmake)
 else(MSVC)
     message(FATAL_ERROR "Unsupported generator: ${CMAKE_GENERATOR}")
 endif(MSVC)
@@ -147,6 +151,7 @@ set INCLUDE=${EXTERNAL_INCLUDE_PATH};%INCLUDE%
 set LIBRARY_PATH=${EXTERNAL_LIB_PATH};%LIBRARY_PATH%
 set CPATH=${EXTERNAL_INCLUDE_PATH};%CPATH%
 set CMAKE_PREFIX_PATH=${EXTERNAL_CMAKE_PREFIX_PATH};%CMAKE_PREFIX_PATH%
+set PKG_CONFIG_PATH=${EXTERNAL_PKG_CONFIG_PATH};%PKG_CONFIG_PATH%
 "
 )
 
@@ -155,14 +160,16 @@ string(REPLACE ";" "\":\"" EXTERNAL_BIN_PATH_STR "${EXTERNAL_BIN_PATH}")
 string(REPLACE ";" "\":\"" EXTERNAL_LIB_PATH_STR "${EXTERNAL_LIB_PATH}")
 string(REPLACE ";" "\":\"" EXTERNAL_INCLUDE_PATH_STR "${EXTERNAL_INCLUDE_PATH}")
 string(REPLACE ";" "\":\"" EXTERNAL_CMAKE_PREFIX_PATH_STR "${EXTERNAL_CMAKE_PREFIX_PATH}")
+string(REPLACE ";" "\":\"" EXTERNAL_PKG_CONFIG_PATH_STR "${EXTERNAL_PKG_CONFIG_PATH}")
 file(WRITE ${CMAKE_BINARY_DIR}/setSearchEnv.sh
 "
 #!/bin/bash
-PATH=\"${EXTERNAL_BIN_PATH_STR}\":\"${NASM_PATH}\":$PATH
-LIB=\"${EXTERNAL_LIB_PATH_STR}\":$LIB
-INCLUDE=\"${EXTERNAL_INCLUDE_PATH_STR}\":$INCLUDE
-LIBRARY_PATH=\"${EXTERNAL_LIB_PATH_STR}\":$LIBRARY_PATH
-CPATH=\"${EXTERNAL_INCLUDE_PATH_STR}\":$CPATH
-CMAKE_PREFIX_PATH=\"${EXTERNAL_CMAKE_PREFIX_PATH_STR}\":$CMAKE_PREFIX_PATH
+PATH=\"$(cygpath -u -p '${EXTERNAL_BIN_PATH}')\":$PATH
+LIB=\"$(cygpath -u -p '${EXTERNAL_LIB_PATH}')\":$LIB
+INCLUDE=\"$(cygpath -u -p '${EXTERNAL_INCLUDE_PATH}')\":$INCLUDE
+LIBRARY_PATH=\"$(cygpath -u -p '${EXTERNAL_LIB_PATH}')\":$LIBRARY_PATH
+CPATH=\"$(cygpath -u -p '${EXTERNAL_INCLUDE_PATH}')\":$CPATH
+CMAKE_PREFIX_PATH=\"$(cygpath -u -p '${EXTERNAL_CMAKE_PREFIX_PATH}')\":$CMAKE_PREFIX_PATH
+PKG_CONFIG_PATH=\"$(cygpath -u -p '${EXTERNAL_PKG_CONFIG_PATH}')\":$PKG_CONFIG_PATH
 "
 )

@@ -60,3 +60,5 @@ ExternalProject_Add_Step(${EXTERNAL_PROJECT_NAME} duplicatingLib
     DEPENDEES install
     LOG 1
 )
+
+set(EXTERNAL_PROJECT_PKG_CONFIG_PATH ${EXTERNAL_PROJECT_INSTALL_DIR}/share/pkgconfig)
