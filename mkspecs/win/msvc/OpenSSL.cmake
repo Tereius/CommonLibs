@@ -4,7 +4,7 @@ find_program(MSYS_EXECUTABLE msys2 DOC "msys2.exe")
 get_filename_component(MSYS_DIR ${MSYS_EXECUTABLE} DIRECTORY)
 
 set(OpenSSL_BRANCH OpenSSL_1_0_1-stable CACHE STRING "The git branch to use.")
-set(OpenSSL_SHARED on CACHE BOOL "Bulid shared libs.")
+set(OpenSSL_BUILD_SHARED on CACHE BOOL "Bulid shared libs.")
 set(OpenSSL_OPTIONS "" CACHE STRING "OpenSSL options forwarded to configure.")
 
 if(WIN32)
@@ -13,6 +13,14 @@ if(WIN32)
 		set(OPENSSL_COMPILER_CONFIG "debug-VC-WIN64A")
 	else()
 		set(OPENSSL_COMPILER_CONFIG "VC-WIN64A")
+	endif()
+
+	if(OpenSSL_BUILD_SHARED)
+		set(OpenSSL_OPTIONS "${OpenSSL_OPTIONS} shared")
+		set(OpenSSL_MAKE "ms/ntdll.mak")
+	else()
+		set(OpenSSL_OPTIONS "${OpenSSL_OPTIONS} no-shared")
+		set(OpenSSL_MAKE "ms/nt.mak")
 	endif()
 
 	file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/configure.bat
@@ -30,7 +38,7 @@ if(WIN32)
 	call \"${CMAKE_BINARY_DIR}/setMsvcEnv.bat\"
 	call \"${CMAKE_BINARY_DIR}/setSearchEnv.bat\"
 	cd /D \"${EXTERNAL_PROJECT_BINARY_DIR}/src/OpenSSL\"
-	nmake -f ms/ntdll.mak
+	nmake -f ${OpenSSL_MAKE}
 	"
 	)
 
@@ -39,7 +47,7 @@ if(WIN32)
 	call \"${CMAKE_BINARY_DIR}/setMsvcEnv.bat\"
 	call \"${CMAKE_BINARY_DIR}/setSearchEnv.bat\"
 	cd /D \"${EXTERNAL_PROJECT_BINARY_DIR}/src/OpenSSL\"
-	nmake -f ms/ntdll.mak install
+	nmake -f ${OpenSSL_MAKE} install
 	"
 	)
 

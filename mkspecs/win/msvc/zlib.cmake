@@ -1,6 +1,7 @@
 include(ExternalProject)
 
 set(ZLIB_BRANCH v1.2.11 CACHE STRING "The git branch to use.")
+set(ZLIB_BUILD_SHARED on CACHE BOOL "Bulid shared libs.")
 
 file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/configure.bat
 "
@@ -40,17 +41,30 @@ ExternalProject_Add(${EXTERNAL_PROJECT_NAME}
     LOG_INSTALL 1
 )
 
-string(REPLACE "/" "\\" ZLIB_FROM "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlib.lib")
-string(REPLACE "/" "\\" ZLIB_TO "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zdll.lib")
-string(REPLACE "/" "\\" ZLIBD_FROM "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlibd.lib")
-string(REPLACE "/" "\\" ZLIBD_TO "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zdll.lib")
-string(REPLACE "/" "\\" ZLIBD2_FROM "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlibd.lib")
-string(REPLACE "/" "\\" ZLIBD2_TO "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlib.lib")
+if(ZLIB_BUILD_SHARED)
+    string(REPLACE "/" "\\" ZLIB_FROM "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlib.lib")
+    string(REPLACE "/" "\\" ZLIB_TO "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zdll.lib")
+    string(REPLACE "/" "\\" ZLIBD_FROM "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlibd.lib")
+    string(REPLACE "/" "\\" ZLIBD_TO "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zdll.lib")
+    string(REPLACE "/" "\\" ZLIBD2_FROM "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlibd.lib")
+    string(REPLACE "/" "\\" ZLIBD2_TO "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlib.lib")
+else()
+    string(REPLACE "/" "\\" ZLIB_FROM "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlibstatic.lib")
+    string(REPLACE "/" "\\" ZLIB_TO "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zdll.lib")
+    string(REPLACE "/" "\\" ZLIBD_FROM "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlibstaticd.lib")
+    string(REPLACE "/" "\\" ZLIBD_TO "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zdll.lib")
+    string(REPLACE "/" "\\" ZLIBD2_FROM "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlibstatic.lib")
+    string(REPLACE "/" "\\" ZLIBD2_TO "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlib.lib")
+    string(REPLACE "/" "\\" ZLIBD3_FROM "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlibstaticd.lib")
+    string(REPLACE "/" "\\" ZLIBD3_TO "${EXTERNAL_PROJECT_INSTALL_DIR}/lib/zlib.lib")
+endif()
+
 file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/duplicatingLib.bat
 "
 copy /Y \"${ZLIB_FROM}\" \"${ZLIB_TO}\"
 copy /Y \"${ZLIBD_FROM}\" \"${ZLIBD_TO}\"
 copy /Y \"${ZLIBD2_FROM}\" \"${ZLIBD2_TO}\"
+copy /Y \"${ZLIBD3_FROM}\" \"${ZLIBD3_TO}\"
 exit 0
 "
 )

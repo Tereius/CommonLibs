@@ -8,7 +8,7 @@ set(Qt5_MODULES "qtbase qtsvg qtdeclarative qttools qttranslations qtrepotools q
 if(Qt5_BUILD_SHARED)
 	set(Qt5_OPTIONS "${Qt5_OPTIONS} -shared")
 else(Qt5_BUILD_SHARED)
-	set(Qt5_OPTIONS "${Qt5_OPTIONS} -static")
+	set(Qt5_OPTIONS "${Qt5_OPTIONS} OPENSSL_LIBS=\"-lssl -lcrypto -L${OpenSSL_EXTERNAL_LIB_PATH}\" -static -L ${OpenSSL_EXTERNAL_LIB_PATH} -I ${OpenSSL_EXTERNAL_INCLUDE_PATH} -L ${zlib_EXTERNAL_LIB_PATH} -I ${zlib_EXTERNAL_INCLUDE_PATH}")
 endif(Qt5_BUILD_SHARED)
 
 if(EXTERNAL_PROJECT_IS_DEBUG)
