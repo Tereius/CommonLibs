@@ -1,5 +1,3 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/grrgl5corcnidnoo/branch/master?svg=true)](https://ci.appveyor.com/project/Tereius/commonlibs/branch/master)
-
 # Common Libraries
 This is a collection of CMake build scripts for common third party libraries.
 
