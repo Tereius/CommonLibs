@@ -1,6 +1,13 @@
 include(ExternalProject)
 
 set(QtWebApp_legacy_BRANCH master CACHE STRING "The git branch to use.")
+set(QtWebApp_legacy_BUILD_SHARED on CACHE BOOL "Bulid shared libs.")
+
+if(QtWebApp_legacy_BUILD_SHARED)
+    set(QtWebApp_legacy_OPTIONS "")
+else()
+    set(QtWebApp_legacy_OPTIONS "CONFIG+=staticlib")
+endif()
 
 string(REPLACE ";" " -L" EXTERNAL_LIB_PATH_STRING "${EXTERNAL_LIB_PATH}")
 string(REPLACE ";" " " EXTERNAL_INCLUDE_PATH_STRING "${EXTERNAL_INCLUDE_PATH}")
@@ -9,7 +16,7 @@ file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/configure.bat
 call \"${CMAKE_BINARY_DIR}/setMsvcEnv.bat\"
 call \"${CMAKE_BINARY_DIR}/setSearchEnv.bat\"
 cd /D \"${EXTERNAL_PROJECT_BINARY_DIR}/src/QtWebApp_legacy/QtWebApp/\"
-qmake -r -tp vc \"LIBS+=${EXTERNAL_LIB_PATH_STRING}\" \"INCLUDEPATH+=${EXTERNAL_INCLUDE_PATH_STRING}\" QtWebApp.pro
+qmake -r -tp vc ${QtWebApp_legacy_OPTIONS} \"LIBS+=${EXTERNAL_LIB_PATH_STRING}\" \"INCLUDEPATH+=${EXTERNAL_INCLUDE_PATH_STRING}\" QtWebApp.pro
 "
 )
 
