@@ -4,6 +4,7 @@ set(Qt5_BRANCH 5.9 CACHE STRING "The git branch to use.")
 set(Qt5_OPTIONS "-opensource -confirm-license -nomake examples -nomake tests -openssl-linked" CACHE STRING "Qt5 options forwarded to configure.")
 set(Qt5_BUILD_SHARED on CACHE BOOL "Bulid shared libs.")
 set(Qt5_MODULES "qtbase qtsvg qtdeclarative qttools qttranslations qtrepotools qtqa qtgraphicaleffects qtquickcontrols qtquickcontrols2" CACHE STRING "QT Submodules.")
+set(Qt5_MOVABLE on CACHE BOOL "Put qt.conf in install dir to overwrite hardcoded QT_INSTALL_PREFIX so the install dir can be moved.")
 
 if(Qt5_BUILD_SHARED)
 	set(Qt5_OPTIONS "${Qt5_OPTIONS} -shared")
@@ -41,14 +42,28 @@ if(WIN32)
 	"
 	)
 
+	string(REPLACE "/" "\\" EXTERNAL_PROJECT_INSTALL_DIR_BACK "${EXTERNAL_PROJECT_INSTALL_DIR}")
 	file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/install.bat
 	"
 	call \"${CMAKE_BINARY_DIR}/setMsvcEnv.bat\"
 	call \"${CMAKE_BINARY_DIR}/setSearchEnv.bat\"
 	cd /D \"${EXTERNAL_PROJECT_BINARY_DIR}/src/Qt5-build\"
 	nmake install
+	cd /D \"${EXTERNAL_PROJECT_BINARY_DIR}\"
+	IF EXIST \"qt.conf\" (
+		copy qt.conf \"${EXTERNAL_PROJECT_INSTALL_DIR_BACK}\\bin\"
+	)
 	"
 	)
+
+	if(Qt5_MOVABLE)
+		file(WRITE ${EXTERNAL_PROJECT_BINARY_DIR}/qt.conf
+		"
+		[Paths]
+		Prefix=..
+		"
+		)
+	endif()
 
 	ExternalProject_Add(${EXTERNAL_PROJECT_NAME}
 		DEPENDS Python Perl zlib OpenSSL
